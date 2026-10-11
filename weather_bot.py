@@ -1,4 +1,20 @@
 import telebot
+import os
+from threading import Thread
+from http.server import HTTPServer, BaseHTTPRequestHandler
+
+def run_dummy_server():
+    class Handler(BaseHTTPRequestHandler):
+        def do_GET(self):
+            self.send_response(200)
+            self.end_headers()
+            self.wfile.write(b"ok")
+        def log_message(self, *args):
+            pass
+    port = int(os.environ.get("PORT", 10000))
+    HTTPServer(("0.0.0.0", port), Handler).serve_forever()
+
+Thread(target=run_dummy_server, daemon=True).start()
 import requests
 
 BOT_TOKEN = "8718393740:AAEY4Fwuf4OgsK4lo8U3TSEXV9vMrYjU7mU"
